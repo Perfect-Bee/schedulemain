@@ -1,8 +1,6 @@
 package com.schedule.service;
 
-import com.schedule.dto.ScheduleCreateRequest;
-import com.schedule.dto.ScheduleCreateResponse;
-import com.schedule.dto.ScheduleGetResponse;
+import com.schedule.dto.*;
 import com.schedule.entity.Schedule;
 import com.schedule.repository.ScheduleRepository;
 import lombok.RequiredArgsConstructor;
@@ -41,12 +39,8 @@ public class ScheduleService {
     // 전체 조회에 필요함 + 읽기만 하면 됨
     @Transactional(readOnly = true)
     public List<ScheduleGetResponse> findAll() {// 4. 원하는대로 만듦
-        // 내가 만들려고 하는 구조는 List<ScheduleGetResponse>
-        // Spring 제공 매서드 : findAll()은 그냥 조회. findAllByOrderByModifiedAtDesc()은 findAll + modified 내림차순
         List<Schedule> schedules = scheduleRepository.findAllByOrderByModifiedAtDesc();
-        // List<ScheduleGetResponse> 구조로 dtos 변수 만들고
         List<ScheduleGetResponse> dtos =  new ArrayList<>();
-        // finaAll으로 찾은 것을 dto에 넣어서
         for  (Schedule schedule : schedules) {
             ScheduleGetResponse dto = new ScheduleGetResponse(
                     schedule.getId(),
@@ -61,20 +55,42 @@ public class ScheduleService {
         }
         return dtos;
     }
-
-    // 3. findOne 만듦
+    // 선택 조회(읽기만 함)
     @Transactional(readOnly = true)
     public ScheduleGetResponse findOne(Long scheduleId) {
-        // 반환할 것이 없을 수 있으니까 .orElseThrow() 사용(Optional 인자가 null인 경우 예외)
         Schedule schedule = scheduleRepository.findById(scheduleId).orElseThrow(
                 () -> new IllegalStateException("찾는 일정 없음")
         );
-        // 있으면 넣어서(전체 조회와 달리 리스트 아님)
         return new  ScheduleGetResponse(
                 schedule.getId(),
                 schedule.getTitle(),
                 schedule.getContent(),
                 schedule.getAuthor(),
+                schedule.getCreatedAt(),
+                schedule.getModifiedAt()
+        );
+    }
+
+    // 선택해서 확인하고, 수정까지 하니까 readOnly 아님
+    // 3. 수정하기(update)
+    @Transactional
+    public ScheduleUpdateResponse update(Long scheduleId, ScheduleUpdateRequest request) {
+        Schedule schedule = scheduleRepository.findById(scheduleId).orElseThrow(
+                () -> new IllegalStateException("수정할 일정 없음")
+        );
+        
+        // 비밀번호 검증 필요 : 객체비교 : s1.equals(s2) : schedule(DB값)와 요청값(입력한값) 비교
+        // 같지 않으면 예외처리 / 같으면 다음 단계로
+        if (!schedule.getPassword().equals(request.getPassword())) {
+            throw new IllegalStateException("비밀번호 불일치");
+        }
+        // 제목, 작성자만 수정함
+        schedule.update(request.getTitle(), request.getAuthor());
+        return  new  ScheduleUpdateResponse(
+                schedule.getId(),
+                schedule.getTitle(),    // 얘랑
+                schedule.getContent(),  // 이거 수정 안 함(update 주의)
+                schedule.getAuthor(),   // 얘만 수정
                 schedule.getCreatedAt(),
                 schedule.getModifiedAt()
         );

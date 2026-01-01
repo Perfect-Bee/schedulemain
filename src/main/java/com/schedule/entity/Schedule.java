@@ -28,11 +28,10 @@ public class Schedule extends BaseEntity{
     }
 
     // 일정 수정 : PutMapping 미리 작성
-    public void update(String title, String content, String author, String password) {
+    // 주의! : 제목과 작성자 명만 변경 가능함.
+    public void update(String title, String author) {
         this.title = title;
-        this.content = content;
         this.author = author;
-        this.password = password;
     }
 
 }

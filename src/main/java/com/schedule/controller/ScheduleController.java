@@ -1,8 +1,6 @@
 package com.schedule.controller;
 
-import com.schedule.dto.ScheduleCreateRequest;
-import com.schedule.dto.ScheduleCreateResponse;
-import com.schedule.dto.ScheduleGetResponse;
+import com.schedule.dto.*;
 import com.schedule.service.ScheduleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -37,6 +35,17 @@ public class ScheduleController {
             @PathVariable Long scheduleId
     ){                                                          // 2. 하나만 찾는거 필요해. 서비스! 만들어!
         return ResponseEntity.status(HttpStatus.OK).body(scheduleService.findOne(scheduleId));
+    }
+
+    // 1. 선택한 일정 수정(원하는 걸 선택해서 수정해야하니 2. 요청/응답)
+    @PutMapping("/schedules/{scheduleId}")
+    public ResponseEntity<ScheduleUpdateResponse> update(
+            @PathVariable Long scheduleId,
+            // 수정사항 : HTTP 요청을 자바 본문(body)으로 바꿔줌(일단 그냥 그렇다고 알고있자)
+            // 여기에서 입력 들어옴 : 제목, 작성자, *비밀번호*
+            @RequestBody ScheduleUpdateRequest request
+    ){                                                      // 4. update(schedule에 생성자 필요함)
+        return ResponseEntity.status(HttpStatus.OK).body(scheduleService.update(scheduleId, request));
     }
 
 }

@@ -4,7 +4,6 @@ import com.schedule.dto.*;
 import com.schedule.entity.Schedule;
 import com.schedule.repository.ScheduleRepository;
 import lombok.RequiredArgsConstructor;
-import org.jspecify.annotations.Nullable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -71,8 +70,7 @@ public class ScheduleService {
         );
     }
 
-    // 선택해서 확인하고, 수정까지 하니까 readOnly 아님
-    // 3. 수정하기(update)
+    // 수정하기(update)
     @Transactional
     public ScheduleUpdateResponse update(Long scheduleId, ScheduleUpdateRequest request) {
         Schedule schedule = scheduleRepository.findById(scheduleId).orElseThrow(
@@ -80,7 +78,7 @@ public class ScheduleService {
         );
         
         // 비밀번호 검증 필요 : 객체비교 : s1.equals(s2) : schedule(DB값)와 요청값(입력한값) 비교
-        // 같지 않으면 예외처리 / 같으면 다음 단계로
+        // 같지 않으면(!) 예외처리 / 같으면 다음 단계로
         if (!schedule.getPassword().equals(request.getPassword())) {
             throw new IllegalStateException("비밀번호 불일치");
         }
@@ -94,5 +92,21 @@ public class ScheduleService {
                 schedule.getCreatedAt(),
                 schedule.getModifiedAt()
         );
+    }
+
+    // 2. 선택한 일정 삭제
+    @Transactional
+    public void delete(Long scheduleId, ScheduleDeleteRequest request) {
+        // 비밀번호 체크를 위해 exist 안씀
+        Schedule schedule = scheduleRepository.findById(scheduleId).orElseThrow(
+                () -> new IllegalStateException("삭제할 일정 없음")
+        );
+
+        // 비밀번호 검증
+        if (!schedule.getPassword().equals(request.getPassword())) {
+            throw new IllegalStateException("비밀번호 불일치");
+        }
+
+        scheduleRepository.deleteById(scheduleId);
     }
 }

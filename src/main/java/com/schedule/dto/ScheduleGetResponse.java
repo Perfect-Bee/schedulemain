@@ -4,7 +4,6 @@ import lombok.Getter;
 
 import java.time.LocalDateTime;
 
-// 2. 조회에 필요한 dto
 @Getter
 public class ScheduleGetResponse {
     private final Long id;

@@ -61,4 +61,22 @@ public class ScheduleService {
         }
         return dtos;
     }
+
+    // 3. findOne 만듦
+    @Transactional(readOnly = true)
+    public ScheduleGetResponse findOne(Long scheduleId) {
+        // 반환할 것이 없을 수 있으니까 .orElseThrow() 사용(Optional 인자가 null인 경우 예외)
+        Schedule schedule = scheduleRepository.findById(scheduleId).orElseThrow(
+                () -> new IllegalStateException("찾는 일정 없음")
+        );
+        // 있으면 넣어서(전체 조회와 달리 리스트 아님)
+        return new  ScheduleGetResponse(
+                schedule.getId(),
+                schedule.getTitle(),
+                schedule.getContent(),
+                schedule.getAuthor(),
+                schedule.getCreatedAt(),
+                schedule.getModifiedAt()
+        );
+    }
 }

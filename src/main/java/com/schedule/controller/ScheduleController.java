@@ -7,10 +7,7 @@ import com.schedule.service.ScheduleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -28,11 +25,18 @@ public class ScheduleController {
     }
 
     // 조회
-    // 1. 전체 조회 : 전체 다 보기만 하면 됨 = List로
+    // 전체 조회 : 전체 다 보기만 하면 됨 = List로
     @GetMapping("/schedules")
     public ResponseEntity<List<ScheduleGetResponse>> getAll(){
-                                                        // 3. 전부 찾는 것을 원함 : findAll 만들어
         return ResponseEntity.status(HttpStatus.OK).body(scheduleService.findAll());
+    }
+    // 1. 선택 조회 : 특정한 것만 필요하기에 List 아님
+    @GetMapping("/schedules/{scheduleId}")
+    public ResponseEntity<ScheduleGetResponse> getOne(
+            //@PathVariable : 경로변수 표기
+            @PathVariable Long scheduleId
+    ){                                                          // 2. 하나만 찾는거 필요해. 서비스! 만들어!
+        return ResponseEntity.status(HttpStatus.OK).body(scheduleService.findOne(scheduleId));
     }
 
 }

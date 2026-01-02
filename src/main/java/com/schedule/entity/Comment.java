@@ -16,8 +16,11 @@ public class Comment extends BaseEntity{
     private String content; // 댓글 내용
     private String author; // 작성자
     private String password; // 비밀번호
+    // 추가: 어떤 일정에 달린 댓글인지
+    private Long scheduleId;
 
-    public Comment(String content, String author, String password) {
+    public Comment(Long scheduleId, String content, String author, String password) {
+        this.scheduleId = scheduleId;
         this.content = content; // 댓글 내용
         this.author = author;   // 작성자
         this.password = password;   // 비밀번호

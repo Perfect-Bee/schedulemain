@@ -1,4 +1,21 @@
 # API 명세서
+## API 명세서 안뽑혀서 이미지로 대체
+<img width="541" height="934" alt="image" src="https://github.com/user-attachments/assets/6198d983-a519-442d-848c-e28c5f3f5ff4" />
+
+<details>
+<summary><strong> 명세서대체 </strong></summary>
+<img width="907" height="1092" alt="image" src="https://github.com/user-attachments/assets/d3a70dfa-2d1f-4bcf-8026-bbfa40691ab6" />
+
+<img width="1422" height="1146" alt="image" src="https://github.com/user-attachments/assets/b1eb766f-a02e-431e-8b50-456d805b0a30" />
+
+<img width="2081" height="856" alt="image" src="https://github.com/user-attachments/assets/126d3aca-9f3a-40b4-8d3e-1c4fc8cf503e" />
+
+<img width="2078" height="788" alt="image" src="https://github.com/user-attachments/assets/0911b2a6-5ee0-47b1-88e7-698bd5deb6f6" />
+
+<img width="1381" height="882" alt="image" src="https://github.com/user-attachments/assets/bef07cc7-56d2-4f30-96d0-8b819fc4b504" />
+
+</details>
+
 
 # ERD
 <img width="1223" height="494" alt="image" src="https://github.com/user-attachments/assets/c4029b81-c263-47a0-8ffd-1d36dd4ea7d2" />

@@ -6,6 +6,7 @@ import com.schedule.repository.ScheduleRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import com.schedule.repository.CommentRepository;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,6 +16,7 @@ import java.util.List;
 public class ScheduleService {
 
     private final ScheduleRepository scheduleRepository;
+    private final CommentRepository commentRepository;
 
     @Transactional
     public ScheduleCreateResponse save(ScheduleCreateRequest request){
@@ -47,7 +49,8 @@ public class ScheduleService {
                     schedule.getContent(),
                     schedule.getAuthor(),
                     schedule.getCreatedAt(),
-                    schedule.getModifiedAt()
+                    schedule.getModifiedAt(),
+                    null // 전체 조회는 확인 안 함
             );
             // dto -> dtos에 넣기
             dtos.add(dto);
@@ -60,13 +63,25 @@ public class ScheduleService {
         Schedule schedule = scheduleRepository.findById(scheduleId).orElseThrow(
                 () -> new IllegalStateException("찾는 일정 없음")
         );
+        // 댓글 조회
+        List<CommentGetResponse> commentDtos = commentRepository.findByScheduleIdOrderByCreatedAtAsc(scheduleId)
+                .stream()
+                .map(c -> new CommentGetResponse(
+                        c.getId(),
+                        c.getContent(),
+                        c.getAuthor(),
+                        c.getCreatedAt(),
+                        c.getModifiedAt()
+                ))
+                .toList();
         return new  ScheduleGetResponse(
                 schedule.getId(),
                 schedule.getTitle(),
                 schedule.getContent(),
                 schedule.getAuthor(),
                 schedule.getCreatedAt(),
-                schedule.getModifiedAt()
+                schedule.getModifiedAt(),
+                commentDtos
         );
     }
 

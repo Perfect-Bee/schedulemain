@@ -4,7 +4,7 @@ import lombok.Getter;
 
 import java.time.LocalDateTime;
 
-// 3-2. 응답
+
 @Getter
 public class ScheduleUpdateResponse {
     private final Long id;
@@ -21,7 +21,7 @@ public class ScheduleUpdateResponse {
         this.title = title;
         this.content = content;
         this.author = author;
-
+    // 응답에는 비밀번호 제외
         this.createdAt = createdAt;
         this.modifiedAt = modifiedAt;
     }

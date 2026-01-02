@@ -3,6 +3,7 @@ package com.schedule.dto;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 public class ScheduleGetResponse {
@@ -15,12 +16,19 @@ public class ScheduleGetResponse {
     private final LocalDateTime createdAt;
     private final LocalDateTime modifiedAt;
 
-    public ScheduleGetResponse(Long id, String title, String content, String author, LocalDateTime createdAt, LocalDateTime modifiedAt) {
+    // 댓글 리스트 추가
+    private final List<CommentGetResponse> comments;
+
+    public ScheduleGetResponse(
+            Long id, String title, String content, String author,
+            LocalDateTime createdAt, LocalDateTime modifiedAt,
+            List<CommentGetResponse> comments) {
         this.id = id;
         this.title = title;
         this.content = content;
         this.author = author;
         this.createdAt = createdAt;
         this.modifiedAt = modifiedAt;
+        this.comments = comments;
     }
 }

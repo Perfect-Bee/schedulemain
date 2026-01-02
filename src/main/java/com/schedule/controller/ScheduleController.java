@@ -34,7 +34,7 @@ public class ScheduleController {
     public ResponseEntity<ScheduleGetResponse> getOne(
             //@PathVariable : 경로변수 표기
             @PathVariable Long scheduleId
-    ){                                                          // 2. 하나만 찾는거 필요해. 서비스! 만들어!
+    ){
         return ResponseEntity.status(HttpStatus.OK).body(scheduleService.findOne(scheduleId));
     }
 
@@ -57,6 +57,7 @@ public class ScheduleController {
     ) {
         scheduleService.delete(scheduleId, request);
         return ResponseEntity.noContent().build();
+        // return esponseEntity.status(HttpStatus.OK).build();
             // 삭제값 반환 HTTP204 = .noContent : 상태코드
             // .body 못씀 -> build로 대신함(<void> 기능이라 함)
     }

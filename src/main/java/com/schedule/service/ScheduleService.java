@@ -10,6 +10,7 @@ import com.schedule.repository.CommentRepository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -73,7 +74,7 @@ public class ScheduleService {
                         c.getCreatedAt(),
                         c.getModifiedAt()
                 ))
-                .toList();
+                .collect(Collectors.toList());
         return new  ScheduleGetResponse(
                 schedule.getId(),
                 schedule.getTitle(),
@@ -81,7 +82,7 @@ public class ScheduleService {
                 schedule.getAuthor(),
                 schedule.getCreatedAt(),
                 schedule.getModifiedAt(),
-                commentDtos
+                commentDtos != null ? commentDtos : new ArrayList<>()  // null 처리
         );
     }
 

@@ -1,6 +1,7 @@
 package com.schedule.controller;
 
 import com.schedule.dto.*;
+import com.schedule.service.CommentService;
 import com.schedule.service.ScheduleService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -13,6 +14,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ScheduleController {
     private final ScheduleService scheduleService;
+    private final CommentService commentService;
+
 
     // 일정 생성
     @PostMapping("/schedules")
@@ -60,5 +63,15 @@ public class ScheduleController {
         // return esponseEntity.status(HttpStatus.OK).build();
             // 삭제값 반환 HTTP204 = .noContent : 상태코드
             // .body 못씀 -> build로 대신함(<void> 기능이라 함)
+    }
+
+    // 댓글 쓰기(작성하기, 생성)
+    @PostMapping("schedules/{scheduleId}/comments")
+    public ResponseEntity<CommentCreateResponse> create(
+            @PathVariable Long scheduleId, // 특정 번호(게시글) 가져오기
+            @RequestBody CommentCreateRequest request
+    ){
+        CommentCreateResponse result = commentService.save(scheduleId, request);
+        return ResponseEntity.status(HttpStatus.CREATED).body(result);
     }
 }
